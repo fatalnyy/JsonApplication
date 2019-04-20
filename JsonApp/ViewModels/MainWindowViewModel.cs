@@ -23,7 +23,7 @@ namespace JsonApp.ViewModels
         }
 
         public string JsonString { get; set; }
-
+        public bool ChangedOrder { get; set; }
         public string FormattedJsonString
         {
             get => _formattedJsonString;
@@ -45,6 +45,10 @@ namespace JsonApp.ViewModels
         }
         public ICommand DownloadJsonStringCommand { get => new RelayCommand(o => DownloadJsonString(), o => true); }
         public ICommand ParseJsonToListOfObjectsCommand { get => new RelayCommand(o => ParseJsonToListOfObjects(), o => true); }
+        public ICommand SortByFullNameCommand { get => new RelayCommand(o => SortByFullName(), o => true); }
+        public ICommand SortByAgeCommand { get => new RelayCommand(o => SortByAge(), o => true); }
+        public ICommand SortBySalaryCommand { get => new RelayCommand(o => SortBySalary(), o => true); }
+        public ICommand SortByAvailabilityOnWeekendsCommand { get => new RelayCommand(o => SortByAvailabilityOnWeekends(), o => true); }
 
         public void DownloadJsonString()
         {
@@ -59,5 +63,61 @@ namespace JsonApp.ViewModels
             }
             FormattedJsonString = Json<Employee>.FormatJsonString(Employees);
         }
+
+        private void SortByFullName()
+        {
+            if (ChangedOrder)
+            {
+                Employees = new ObservableCollection<Employee>(Employees.OrderBy(p => p.FullName));
+                ChangedOrder = false;
+            }
+            else
+            {
+                Employees = new ObservableCollection<Employee>(Employees.OrderByDescending(p => p.FullName));
+                ChangedOrder = true;
+            }
+        }
+        private void SortByAge()
+        {
+            if(ChangedOrder)
+            {
+                Employees = new ObservableCollection<Employee>(Employees.OrderBy(p => p.Age));
+                ChangedOrder = false;
+            }
+            else
+            {
+                Employees = new ObservableCollection<Employee>(Employees.OrderByDescending(p => p.Age));
+                ChangedOrder = true;
+            }
+        }
+
+        private void SortBySalary()
+        {
+            if (ChangedOrder)
+            {
+                Employees = new ObservableCollection<Employee>(Employees.OrderBy(p => p.Salary));
+                ChangedOrder = false;
+            }
+            else
+            {
+                Employees = new ObservableCollection<Employee>(Employees.OrderByDescending(p => p.Salary));
+                ChangedOrder = true;
+            }
+        }
+
+        private void SortByAvailabilityOnWeekends()
+        {
+            if (ChangedOrder)
+            {
+                Employees = new ObservableCollection<Employee>(Employees.OrderBy(p => p.IsAvailableOnWeekends));
+                ChangedOrder = true;
+            }
+            else
+            {
+                Employees = new ObservableCollection<Employee>(Employees.OrderByDescending(p => p.IsAvailableOnWeekends));
+                ChangedOrder = true;
+            }
+        }
+
     }
 }

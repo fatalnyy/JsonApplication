@@ -52,10 +52,18 @@
             ItemsSource="{Binding Employees}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="200" Header="Full Name" DisplayMemberBinding="{Binding FullName}"/>
-                    <GridViewColumn Width="100" Header="Age" DisplayMemberBinding="{Binding Age}"/>
-                    <GridViewColumn Width="140" Header="Salary" DisplayMemberBinding="{Binding Salary}"/>
-                    <GridViewColumn Width="180" Header="Is available on weekends" DisplayMemberBinding="{Binding IsAvailableOnWeekends}"/>
+                    <GridViewColumn Width="200" DisplayMemberBinding="{Binding FullName}">
+                        <GridViewColumnHeader Content="Full Name"  Command="{Binding SortByFullNameCommand}"/>
+                    </GridViewColumn>
+                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding Age}">
+                        <GridViewColumnHeader Content="Age"  Command="{Binding SortByAgeCommand}"/>
+                    </GridViewColumn>
+                    <GridViewColumn Width="140" DisplayMemberBinding="{Binding Salary}">
+                        <GridViewColumnHeader Content="Salary"  Command="{Binding SortBySalaryCommand}"/>
+                    </GridViewColumn>
+                    <GridViewColumn Width="180" DisplayMemberBinding="{Binding IsAvailableOnWeekends}">
+                        <GridViewColumnHeader Content="Is available on weekends"  Command="{Binding SortByAvailabilityOnWeekendsCommand}"/>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
