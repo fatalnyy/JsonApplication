@@ -36,6 +36,14 @@
             Grid.Column="1"
             Content="Parse Json to list"
             Command="{Binding ParseJsonToListOfObjectsCommand}"/>
+        
+        <Button
+            Height="50"
+            Width="150"
+            Grid.Column="2"
+            Content="Save to file"
+            Command="{Binding SaveResultsToFileCommand}"/>
+        
 
         <ScrollViewer
             Grid.Row="1"
@@ -62,7 +70,7 @@
                         <GridViewColumnHeader Content="Salary"  Command="{Binding SortBySalaryCommand}"/>
                     </GridViewColumn>
                     <GridViewColumn Width="180" DisplayMemberBinding="{Binding IsAvailableOnWeekends}">
-                        <GridViewColumnHeader Content="Is available on weekends"  Command="{Binding SortByAvailabilityOnWeekendsCommand}"/>
+                        <GridViewColumnHeader Content="Is available on weekends" Command="{Binding SortByAvailabilityOnWeekendsCommand}"/>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>

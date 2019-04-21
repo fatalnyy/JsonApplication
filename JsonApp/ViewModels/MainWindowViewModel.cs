@@ -1,9 +1,11 @@
 ﻿using JsonApp.Commands;
 using JsonApp.Models;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -49,6 +51,7 @@ namespace JsonApp.ViewModels
         public ICommand SortByAgeCommand { get => new RelayCommand(o => SortByAge(), o => true); }
         public ICommand SortBySalaryCommand { get => new RelayCommand(o => SortBySalary(), o => true); }
         public ICommand SortByAvailabilityOnWeekendsCommand { get => new RelayCommand(o => SortByAvailabilityOnWeekends(), o => true); }
+        public ICommand SaveResultsToFileCommand { get => new RelayCommand(o => SaveResultsToFile(), o => true); }
 
         public void DownloadJsonString()
         {
@@ -64,6 +67,19 @@ namespace JsonApp.ViewModels
             FormattedJsonString = Json<Employee>.FormatJsonString(Employees);
         }
 
+        private void SaveResultsToFile()
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "JSON files (*.json)|*.json|XML files (*.xml)|*.xml";
+
+            if (sfd.ShowDialog() == true)
+            {
+                if(sfd.FilterIndex == 1)
+                    File.WriteAllText(sfd.FileName, Json<Employee>.FormatJsonString(Employees));
+                else
+                    Xml<ObservableCollection<Employee>>.SerializeObjectToXML(Employees, sfd.FileName);
+            }
+        }
         private void SortByFullName()
         {
             if (ChangedOrder)

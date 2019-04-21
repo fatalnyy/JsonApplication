@@ -61,6 +61,7 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Models\Json.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\Xml.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
