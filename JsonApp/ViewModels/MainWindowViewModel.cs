@@ -1,15 +1,18 @@
 ﻿using JsonApp.Commands;
 using JsonApp.Models;
+using JsonApp.Models.Database;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace JsonApp.ViewModels
@@ -45,17 +48,19 @@ namespace JsonApp.ViewModels
                 RaisePropertyChanged(nameof(Employees));
             }
         }
-        public ICommand DownloadJsonStringCommand { get => new RelayCommand(o => DownloadJsonString(), o => true); }
+        public ICommand GetJsonStringCommand { get => new RelayCommand(o => GetJsonString(), o => true); }
         public ICommand ParseJsonToListOfObjectsCommand { get => new RelayCommand(o => ParseJsonToListOfObjects(), o => true); }
         public ICommand SortByFullNameCommand { get => new RelayCommand(o => SortByFullName(), o => true); }
         public ICommand SortByAgeCommand { get => new RelayCommand(o => SortByAge(), o => true); }
         public ICommand SortBySalaryCommand { get => new RelayCommand(o => SortBySalary(), o => true); }
         public ICommand SortByAvailabilityOnWeekendsCommand { get => new RelayCommand(o => SortByAvailabilityOnWeekends(), o => true); }
         public ICommand SaveResultsToFileCommand { get => new RelayCommand(o => SaveResultsToFile(), o => true); }
+        public ICommand SaveResultsToDatabaseCommand { get => new RelayCommand(o => SaveResultsToDatabase(), o => true); }
 
-        public void DownloadJsonString()
+        public void GetJsonString()
         {
             JsonString = new WebClient().DownloadString("https://api.jsonbin.io/b/5cbb3d6f0a5cb2577c33aae3");
+            MessageBox.Show("Json was downloaded correctly.");
         }
 
         public void ParseJsonToListOfObjects()
@@ -80,6 +85,20 @@ namespace JsonApp.ViewModels
                     Xml<ObservableCollection<Employee>>.SerializeObjectToXML(Employees, sfd.FileName);
             }
         }
+
+        private void SaveResultsToDatabase()
+        {
+            using (var db = new AppDbContext())
+            {
+                if (db.Employees.Any())
+                {
+                    db.AddRange(Employees);
+                    db.SaveChanges();
+                    MessageBox.Show("Results were saved in database correctly.");
+                }
+            }
+        }
+
         private void SortByFullName()
         {
             if (ChangedOrder)

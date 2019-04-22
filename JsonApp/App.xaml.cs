@@ -1,4 +1,6 @@
-﻿using System;
+﻿using JsonApp.Models.Database;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +15,12 @@ namespace JsonApp
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            using (AppDbContext dbContext = new AppDbContext())
+            {
+                dbContext.Database.EnsureCreated();
+            }
+        }
     }
 }
