@@ -1,6 +1,7 @@
 ﻿using JsonApp.Commands;
 using JsonApp.Models;
 using JsonApp.Models.Database;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
@@ -19,16 +20,28 @@ namespace JsonApp.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
+        #region Fields
+        
         private string _formattedJsonString;
         private ObservableCollection<Employee> _employees;
+
+        #endregion
+
+        #region Constructors
 
         public MainWindowViewModel()
         {
             _employees = new ObservableCollection<Employee>();
         }
 
+        #endregion
+
+        #region Properties
+
         public string JsonString { get; set; }
+
         public bool ChangedOrder { get; set; }
+
         public string FormattedJsonString
         {
             get => _formattedJsonString;
@@ -48,6 +61,7 @@ namespace JsonApp.ViewModels
                 RaisePropertyChanged(nameof(Employees));
             }
         }
+
         public ICommand GetJsonStringCommand { get => new RelayCommand(o => GetJsonString(), o => true); }
         public ICommand ParseJsonToListOfObjectsCommand { get => new RelayCommand(o => ParseJsonToListOfObjects(), o => true); }
         public ICommand SortByFullNameCommand { get => new RelayCommand(o => SortByFullName(), o => true); }
@@ -57,45 +71,76 @@ namespace JsonApp.ViewModels
         public ICommand SaveResultsToFileCommand { get => new RelayCommand(o => SaveResultsToFile(), o => true); }
         public ICommand SaveResultsToDatabaseCommand { get => new RelayCommand(o => SaveResultsToDatabase(), o => true); }
 
-        public void GetJsonString()
+        #endregion
+
+        #region Methods
+
+        private void GetJsonString()
         {
-            JsonString = new WebClient().DownloadString("https://api.jsonbin.io/b/5cbb3d6f0a5cb2577c33aae3");
-            MessageBox.Show("Json was downloaded correctly.");
+            try
+            {
+                JsonString = new WebClient().DownloadString("https://api.jsonbin.io/b/5cbb3d6f0a5cb2577c33aae3");
+                MessageBox.Show("Json was downloaded correctly.");
+            }
+            catch
+            {
+                MessageBox.Show("Check your internet connection!");
+            }
         }
 
-        public void ParseJsonToListOfObjects()
+        private void ParseJsonToListOfObjects()
         {
-            foreach (var employee in Json<Employee>.ConvertJsonToCollectionOfObjects(JsonString))
+            if(JsonString != null)
             {
-                Employees.Insert(0, employee);
+                foreach (var employee in Json<Employee>.ConvertJsonToCollectionOfObjects(JsonString))
+                {
+                    Employees.Insert(0, employee);
+                }
+                FormattedJsonString = Json<Employee>.FormatJsonString(Employees);
             }
-            FormattedJsonString = Json<Employee>.FormatJsonString(Employees);
+            else
+            {
+                MessageBox.Show("You have to download json first!");
+            }
         }
 
         private void SaveResultsToFile()
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "JSON files (*.json)|*.json|XML files (*.xml)|*.xml";
-
-            if (sfd.ShowDialog() == true)
+            if(Employees.Count != 0)
             {
-                if(sfd.FilterIndex == 1)
-                    File.WriteAllText(sfd.FileName, Json<Employee>.FormatJsonString(Employees));
-                else
-                    Xml<ObservableCollection<Employee>>.SerializeObjectToXML(Employees, sfd.FileName);
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "JSON files (*.json)|*.json|XML files (*.xml)|*.xml";
+
+                if (sfd.ShowDialog() == true)
+                {
+                    if (sfd.FilterIndex == 1)
+                        File.WriteAllText(sfd.FileName, Json<Employee>.FormatJsonString(Employees));
+                    else
+                        Xml<ObservableCollection<Employee>>.SerializeObjectToXML(Employees, sfd.FileName);
+                }
+            }
+            else
+            {
+                MessageBox.Show("You have to download json and parse it to list of objects first!");
             }
         }
 
         private void SaveResultsToDatabase()
         {
-            using (var db = new AppDbContext())
+            if(Employees.Count != 0)
             {
-                if (db.Employees.Any())
+                using (var db = new AppDbContext())
                 {
-                    db.AddRange(Employees);
+                    db.Employees.AddRange(Employees);
                     db.SaveChanges();
+                    Employees.Clear();
+                    ParseJsonToListOfObjects();
                     MessageBox.Show("Results were saved in database correctly.");
                 }
+            }
+            else
+            {
+                MessageBox.Show("You have to download json and parse it to list of objects first!");
             }
         }
 
@@ -154,5 +199,6 @@ namespace JsonApp.ViewModels
             }
         }
 
+        #endregion
     }
 }

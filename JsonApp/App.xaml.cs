@@ -19,7 +19,7 @@ namespace JsonApp
         {
             using (AppDbContext dbContext = new AppDbContext())
             {
-                dbContext.Database.EnsureCreated();
+                dbContext.Database.Migrate();
             }
         }
     }

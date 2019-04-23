@@ -19,7 +19,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -28,29 +28,28 @@
             Height="50"
             Width="150"
             Content="Download JSON"
-            Command="{Binding GetJsonStringCommand}" RenderTransformOrigin="0.113,0.56" Margin="0,0,168,0"/>
-
-        <Button
-            Height="50"
-            Width="150"
-            Content="Parse Json to list"
-            Command="{Binding ParseJsonToListOfObjectsCommand}" Margin="168,0,0,0"/>
+            Command="{Binding GetJsonStringCommand}"/>
 
         <Button
             Height="50"
             Width="150"
             Grid.Column="1"
+            Content="Parse Json to list of objects"
+            Command="{Binding ParseJsonToListOfObjectsCommand}"/>
+
+        <Button
+            Height="50"
+            Width="150"
+            Grid.Column="2"
             Content="Save to file"
-            Command="{Binding SaveResultsToFileCommand}" Margin="10,0,159,0"/>
+            Command="{Binding SaveResultsToFileCommand}"/>
 
         <Button
             Height="50"
             Width="150"
-            Grid.Column="1"
+            Grid.Column="3"
             Content="Save to database"
-            Command="{Binding SaveResultsToDatabaseCommand}" Margin="169,0,0,0"/>
-
-
+            Command="{Binding SaveResultsToDatabaseCommand}"/>
 
         <ScrollViewer
             Grid.Row="1"
