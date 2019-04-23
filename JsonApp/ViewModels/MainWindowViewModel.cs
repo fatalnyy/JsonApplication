@@ -79,7 +79,7 @@ namespace JsonApp.ViewModels
         {
             try
             {
-                JsonString = new WebClient().DownloadString("https://api.jsonbin.io/b/5cbb3d6f0a5cb2577c33aae3");
+                JsonString = new WebClient().DownloadString("https://api.jsonbin.io/b/5cbf4a951f6d9a5478d00622");
                 MessageBox.Show("Json was downloaded correctly.");
             }
             catch

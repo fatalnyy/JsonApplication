@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JsonApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190423161702_first")]
-    partial class first
+    [Migration("20190423173321_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

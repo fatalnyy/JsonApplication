@@ -165,9 +165,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
-    <Compile Include="Migrations\20190423161702_first.cs" />
-    <Compile Include="Migrations\20190423161702_first.designer.cs">
-      <DependentUpon>20190423161702_first.cs</DependentUpon>
+    <Compile Include="Migrations\20190423173321_InitialCreate.cs" />
+    <Compile Include="Migrations\20190423173321_InitialCreate.designer.cs">
+      <DependentUpon>20190423173321_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
     <Compile Include="Models\Database\AppDbContext.cs" />
