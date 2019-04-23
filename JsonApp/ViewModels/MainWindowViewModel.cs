@@ -190,7 +190,7 @@ namespace JsonApp.ViewModels
             if (ChangedOrder)
             {
                 Employees = new ObservableCollection<Employee>(Employees.OrderBy(p => p.IsAvailableOnWeekends));
-                ChangedOrder = true;
+                ChangedOrder = false;
             }
             else
             {
